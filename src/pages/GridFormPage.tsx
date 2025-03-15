@@ -9,12 +9,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowRight, Info, Upload } from 'lucide-react';
-import { GridType, InstallationType, ConsumerForm } from '@/types';
+import { GridType, InstallationType, ConsumerForm, GridTypeParam } from '@/types';
 
 const GridFormPage = () => {
   const { type, gridType } = useParams<{ type: string; gridType: string }>();
   const installationType = type as InstallationType;
-  const gridTypeParam = gridType as GridType;
+  const gridTypeParam = gridType as GridTypeParam;
   
   const navigate = useNavigate();
   

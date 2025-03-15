@@ -5,6 +5,9 @@ export type InstallationType = 'Residential' | 'Commercial' | 'Industrial';
 
 export type GridType = 'On-Grid' | 'Off-Grid';
 
+// To fix the comparison issue we need to add lowercase versions
+export type GridTypeParam = 'on-grid' | 'off-grid';
+
 export interface NewsItem {
   id: string;
   title: string;

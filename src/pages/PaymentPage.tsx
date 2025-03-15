@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Separator } from '@/components/ui/separator';
-import { CreditCard, Smartphone, Bank } from 'lucide-react';
+import { CreditCard, Smartphone, Building } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const PaymentPage = () => {
@@ -91,7 +91,7 @@ const PaymentPage = () => {
                       <div className={`flex items-center space-x-2 rounded-md border p-4 ${paymentMethod === 'netbanking' ? 'border-solar-blue bg-blue-50' : ''}`}>
                         <RadioGroupItem value="netbanking" id="netbanking" />
                         <Label htmlFor="netbanking" className="flex items-center cursor-pointer flex-1">
-                          <Bank className="h-5 w-5 mr-3 text-muted-foreground" />
+                          <Building className="h-5 w-5 mr-3 text-muted-foreground" />
                           <span>Net Banking</span>
                         </Label>
                       </div>
