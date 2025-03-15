@@ -15,7 +15,7 @@ const HeroSection = () => {
         <div className="flex flex-col md:flex-row items-center">
           <div className="md:w-1/2 text-center md:text-left mb-10 md:mb-0">
             <h1 className="text-3xl md:text-5xl font-bold text-white mb-4">
-              Connecting Solar Vendors & Consumers
+              EcoGrid AI: Solar Solutions
             </h1>
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-lg mx-auto md:mx-0">
               Estimate costs, find reliable vendors, and transition to clean energy with ease.

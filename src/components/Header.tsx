@@ -9,7 +9,7 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4 flex justify-between items-center">
         <Link to="/" className="flex items-center space-x-2">
           <Sun className="h-8 w-8 text-solar-yellow" />
-          <span className="font-bold text-xl text-solar-dark">SunVendor Link</span>
+          <span className="font-bold text-xl text-solar-dark">EcoGrid AI</span>
         </Link>
         <nav className="hidden md:flex space-x-6">
           <Link to="/" className="text-solar-dark hover:text-solar-orange transition-colors">

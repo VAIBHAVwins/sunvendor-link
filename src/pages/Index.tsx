@@ -6,6 +6,7 @@ import HeroSection from '@/components/HeroSection';
 import RoleSelection from '@/components/RoleSelection';
 import NewsCard from '@/components/NewsCard';
 import SchemeCard from '@/components/SchemeCard';
+import HomeBanner from '@/components/HomeBanner';
 import { newsItems, schemeItems } from '@/data/mockData';
 
 const Index = () => {
@@ -15,6 +16,8 @@ const Index = () => {
       
       <main className="flex-grow">
         <HeroSection />
+        
+        <HomeBanner />
         
         <RoleSelection />
         

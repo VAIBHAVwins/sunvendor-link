@@ -17,7 +17,7 @@ const VendorPage = () => {
           <div className="container mx-auto px-4">
             <h1 className="text-3xl font-bold text-white mb-2">Vendor Dashboard</h1>
             <p className="text-white/80">
-              Connect with customers and grow your solar business
+              Connect with customers and grow your solar business with EcoGrid AI
             </p>
           </div>
         </div>
@@ -114,7 +114,7 @@ const VendorPage = () => {
           <div className="mt-12 text-center max-w-2xl mx-auto">
             <h2 className="text-2xl font-bold mb-4">Why Join as a Vendor?</h2>
             <p className="text-muted-foreground mb-8">
-              SunVendor Link is the leading platform connecting solar vendors with qualified customers
+              EcoGrid AI is the leading platform connecting solar vendors with qualified customers
             </p>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

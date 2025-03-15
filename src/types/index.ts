@@ -54,3 +54,15 @@ export interface ConsumerForm {
   availableAreaSqft: number;
   electricityBillFile?: File;
 }
+
+export interface Product {
+  id: string;
+  name: string;
+  category: string;
+  price: number;
+  description: string;
+  specifications?: string;
+  imageUrls: string[];
+  inStock: boolean;
+  vendorId: string;
+}
