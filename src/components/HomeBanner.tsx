@@ -1,7 +1,8 @@
 
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/components/ui/carousel';
 import { Card, CardContent } from '@/components/ui/card';
+import { type CarouselApi } from '@/components/ui/carousel';
 
 interface Banner {
   id: string;
@@ -38,12 +39,43 @@ const banners: Banner[] = [
 ];
 
 const HomeBanner = () => {
+  const [api, setApi] = React.useState<CarouselApi>();
+  const intervalRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    if (!api) return;
+
+    // Start autoplay
+    const startAutoplay = () => {
+      intervalRef.current = window.setInterval(() => {
+        api.scrollNext();
+      }, 5000); // Change slide every 5 seconds
+    };
+
+    // Clear interval when unmounting or when api changes
+    const stopAutoplay = () => {
+      if (intervalRef.current !== null) {
+        clearInterval(intervalRef.current);
+        intervalRef.current = null;
+      }
+    };
+
+    startAutoplay();
+
+    // Clean up on unmount
+    return () => stopAutoplay();
+  }, [api]);
+
   return (
     <section className="py-10 bg-gray-50">
       <div className="container mx-auto px-4">
         <h2 className="text-2xl font-bold mb-6 text-center">Featured Solar Solutions</h2>
         
-        <Carousel className="w-full max-w-5xl mx-auto" opts={{ loop: true, align: "center" }} autoPlay={true}>
+        <Carousel 
+          className="w-full max-w-5xl mx-auto" 
+          opts={{ loop: true, align: "center" }}
+          setApi={setApi}
+        >
           <CarouselContent>
             {banners.map((banner) => (
               <CarouselItem key={banner.id} className="md:basis-2/3 lg:basis-3/4">
