@@ -1,7 +1,6 @@
 
 import React from 'react';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Sun } from 'lucide-react';
+import { Sun } from 'lucide-react';
 
 const HeroSection = () => {
   return (
@@ -20,14 +19,6 @@ const HeroSection = () => {
             <p className="text-lg md:text-xl text-white/80 mb-8 max-w-lg mx-auto md:mx-0">
               Estimate costs, find reliable vendors, and transition to clean energy with ease.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
-              <Button className="bg-solar-yellow hover:bg-solar-yellow/90 text-solar-dark font-medium">
-                Get Started <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white/10">
-                Learn More
-              </Button>
-            </div>
           </div>
           
           <div className="md:w-1/2 flex justify-center">

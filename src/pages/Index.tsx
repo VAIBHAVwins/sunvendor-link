@@ -56,11 +56,6 @@ const Index = () => {
             <p className="text-white text-lg mb-8 max-w-2xl mx-auto">
               Take the first step towards sustainable energy. Get an estimate for your location and connect with trusted vendors.
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="px-6 py-3 bg-white rounded-md font-medium text-solar-orange hover:bg-gray-100 transition-colors">
-                Get Started Now
-              </button>
-            </div>
           </div>
         </section>
       </main>
