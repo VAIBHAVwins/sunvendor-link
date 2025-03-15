@@ -31,7 +31,7 @@ const Header = () => {
               Solutions
             </button>
             <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-200">
-              <Link to="/consumer/new-installation/Residential" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+              <Link to="/consumer/new-installation/residential" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
                 New Installation
               </Link>
               <Link to="/consumer/upgrade" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
@@ -48,13 +48,13 @@ const Header = () => {
               Installation Types
             </button>
             <div className="absolute left-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-200">
-              <Link to="/consumer/new-installation/Residential" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+              <Link to="/consumer/new-installation/residential" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
                 Residential
               </Link>
-              <Link to="/consumer/new-installation/Commercial" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+              <Link to="/consumer/new-installation/commercial" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
                 Commercial
               </Link>
-              <Link to="/consumer/new-installation/Industrial" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+              <Link to="/consumer/new-installation/industrial" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
                 Industrial
               </Link>
             </div>
@@ -103,7 +103,7 @@ const Header = () => {
             
             <div className="py-2">
               <span className="block font-medium text-solar-dark mb-1">Solutions</span>
-              <Link to="/consumer/new-installation/Residential" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
+              <Link to="/consumer/new-installation/residential" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
                 New Installation
               </Link>
               <Link to="/consumer/upgrade" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
@@ -116,13 +116,13 @@ const Header = () => {
             
             <div className="py-2">
               <span className="block font-medium text-solar-dark mb-1">Installation Types</span>
-              <Link to="/consumer/new-installation/Residential" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
+              <Link to="/consumer/new-installation/residential" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
                 Residential
               </Link>
-              <Link to="/consumer/new-installation/Commercial" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
+              <Link to="/consumer/new-installation/commercial" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
                 Commercial
               </Link>
-              <Link to="/consumer/new-installation/Industrial" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
+              <Link to="/consumer/new-installation/industrial" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
                 Industrial
               </Link>
             </div>
