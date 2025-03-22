@@ -9,6 +9,11 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { MapPin, Star, CheckCircle, Clock } from 'lucide-react';
 import { Separator } from "@/components/ui/separator";
 import { useToast } from "@/hooks/use-toast";
+import RatingStars from '@/components/RatingStars';
+import VendorRatingForm from '@/components/VendorRatingForm';
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@/components/ui/label";
 
 const VendorDetailPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,6 +23,10 @@ const VendorDetailPage = () => {
   const vendor = vendors.find(v => v.id === id);
   
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(true); // Simulating logged in user for demo
+  const [showRatingForm, setShowRatingForm] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState('creditCard');
+  const [isPaymentDialogOpen, setIsPaymentDialogOpen] = useState(false);
+  const [isProcessingPayment, setIsProcessingPayment] = useState(false);
   
   if (!vendor) {
     return (
@@ -41,7 +50,7 @@ const VendorDetailPage = () => {
   
   const handleSiteVisitClick = () => {
     if (isUserLoggedIn) {
-      navigate(`/payment/${vendor.id}`);
+      setIsPaymentDialogOpen(true);
     } else {
       toast({
         title: "Login Required",
@@ -52,12 +61,30 @@ const VendorDetailPage = () => {
     }
   };
   
+  const handlePaymentSubmit = () => {
+    setIsProcessingPayment(true);
+    
+    // Simulate payment processing
+    setTimeout(() => {
+      setIsProcessingPayment(false);
+      setIsPaymentDialogOpen(false);
+      
+      toast({
+        title: "Payment Successful",
+        description: "Your site visit has been booked successfully. The vendor will contact you soon.",
+        duration: 5000,
+      });
+      
+      navigate(`/consumer/dashboard?newBooking=true`);
+    }, 2000);
+  };
+  
   return (
     <div className="min-h-screen flex flex-col consumer-theme">
       <Header />
       
       <main className="flex-grow">
-        <div className="bg-gradient-to-r from-solar-blue to-solar-dark py-10">
+        <div className="bg-gradient-to-r from-teal-500 to-sky-600 py-10">
           <div className="container mx-auto px-4">
             <div className="text-center mb-6">
               <h5 className="text-white/80 italic">EcoGrid AI</h5>
@@ -70,8 +97,8 @@ const VendorDetailPage = () => {
             <h1 className="text-3xl font-bold text-white mb-2">{vendor.name}</h1>
             <div className="flex items-center text-white/90">
               <div className="flex items-center mr-4">
-                <Star className="h-4 w-4 fill-solar-yellow text-solar-yellow mr-1" />
-                <span>{vendor.rating}</span>
+                <RatingStars rating={vendor.rating} />
+                <span className="ml-2">{vendor.rating}</span>
                 <span className="text-sm text-white/70 ml-1">({vendor.reviews} reviews)</span>
               </div>
               <div className="flex items-center">
@@ -85,7 +112,7 @@ const VendorDetailPage = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
-              <Card className="consumer-card">
+              <Card className="consumer-card mb-8">
                 <CardHeader>
                   <CardTitle>Price Breakdown</CardTitle>
                   <CardDescription>Detailed pricing for solar installation components</CardDescription>
@@ -110,7 +137,7 @@ const VendorDetailPage = () => {
                 </CardContent>
               </Card>
               
-              <div className="mt-8 space-y-4">
+              <div className="space-y-4">
                 <h3 className="text-xl font-semibold">Vendor Information</h3>
                 <Card className="consumer-card">
                   <CardContent className="pt-6">
@@ -136,6 +163,27 @@ const VendorDetailPage = () => {
                     </div>
                   </CardContent>
                 </Card>
+                
+                {isUserLoggedIn && (
+                  <div className="mt-8">
+                    {showRatingForm ? (
+                      <VendorRatingForm 
+                        vendorId={vendor.id} 
+                        vendorName={vendor.name}
+                        onRatingSubmit={() => setShowRatingForm(false)}
+                      />
+                    ) : (
+                      <Button 
+                        onClick={() => setShowRatingForm(true)}
+                        variant="outline"
+                        className="w-full"
+                      >
+                        <Star className="mr-2 h-4 w-4" />
+                        Rate this Vendor
+                      </Button>
+                    )}
+                  </div>
+                )}
               </div>
             </div>
             
@@ -159,7 +207,7 @@ const VendorDetailPage = () => {
                     <span>Customized installation plan</span>
                   </div>
                   <div className="flex items-center space-x-2 text-sm">
-                    <Clock className="h-4 w-4 text-solar-blue" />
+                    <Clock className="h-4 w-4 text-teal-500" />
                     <span>Usually scheduled within 48 hours</span>
                   </div>
                   
@@ -185,7 +233,7 @@ const VendorDetailPage = () => {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-2">
                   <Button 
-                    className="w-full bg-solar-orange hover:bg-solar-orange/90 consumer-cta-button"
+                    className="w-full consumer-cta-button"
                     onClick={handleSiteVisitClick}
                   >
                     Book Site Visit Now
@@ -199,6 +247,66 @@ const VendorDetailPage = () => {
           </div>
         </div>
       </main>
+      
+      <Dialog open={isPaymentDialogOpen} onOpenChange={setIsPaymentDialogOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Payment for Site Visit</DialogTitle>
+            <DialogDescription>
+              Select a payment method to book your site visit with {vendor.name}
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="py-4">
+            <RadioGroup value={paymentMethod} onValueChange={setPaymentMethod} className="space-y-3">
+              <div className="flex items-center space-x-2 border rounded-md p-3">
+                <RadioGroupItem value="creditCard" id="creditCard" />
+                <Label htmlFor="creditCard" className="flex-grow cursor-pointer">
+                  <div className="font-medium">Credit/Debit Card</div>
+                  <div className="text-sm text-muted-foreground">Pay securely with your card</div>
+                </Label>
+                <div className="flex space-x-1">
+                  <div className="w-8 h-5 bg-blue-500 rounded"></div>
+                  <div className="w-8 h-5 bg-orange-500 rounded"></div>
+                </div>
+              </div>
+              
+              <div className="flex items-center space-x-2 border rounded-md p-3">
+                <RadioGroupItem value="upi" id="upi" />
+                <Label htmlFor="upi" className="flex-grow cursor-pointer">
+                  <div className="font-medium">UPI</div>
+                  <div className="text-sm text-muted-foreground">Google Pay, PhonePe, Paytm, etc.</div>
+                </Label>
+                <div className="w-8 h-5 bg-green-500 rounded"></div>
+              </div>
+              
+              <div className="flex items-center space-x-2 border rounded-md p-3">
+                <RadioGroupItem value="netBanking" id="netBanking" />
+                <Label htmlFor="netBanking" className="flex-grow cursor-pointer">
+                  <div className="font-medium">Net Banking</div>
+                  <div className="text-sm text-muted-foreground">All major banks supported</div>
+                </Label>
+                <div className="w-8 h-5 bg-gray-300 rounded"></div>
+              </div>
+            </RadioGroup>
+          </div>
+          
+          <DialogFooter className="sm:justify-between">
+            <div className="flex items-center">
+              <span>Total: </span>
+              <span className="font-bold ml-1">₹1,118</span>
+            </div>
+            <Button 
+              type="button" 
+              className="consumer-cta-button"
+              disabled={isProcessingPayment}
+              onClick={handlePaymentSubmit}
+            >
+              {isProcessingPayment ? 'Processing...' : 'Pay Now'}
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       
       <Footer />
     </div>

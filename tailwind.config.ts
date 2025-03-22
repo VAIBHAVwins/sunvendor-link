@@ -32,6 +32,28 @@ export default {
 					dark: '#1F2937',
 					light: '#F9FAFB',
 				},
+				// New color palettes
+				teal: {
+					400: '#4FD1C5',
+					500: '#38B2AC',
+					600: '#319795',
+					700: '#2C7A7B',
+				},
+				sky: {
+					400: '#38BDF8',
+					500: '#0EA5E9',
+					600: '#0284C7',
+				},
+				amber: {
+					400: '#FBBF24',
+					500: '#F59E0B',
+					600: '#D97706',
+				},
+				navy: {
+					500: '#1E3A8A',
+					600: '#172554',
+					700: '#0F172A',
+				},
 				primary: {
 					DEFAULT: 'hsl(var(--primary))',
 					foreground: 'hsl(var(--primary-foreground))'

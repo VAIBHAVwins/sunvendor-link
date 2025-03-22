@@ -23,11 +23,16 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
         <img 
           src={news.imageUrl} 
           alt={news.title} 
-          className="w-full h-full object-cover transition-transform group-hover:scale-105"
+          className="w-full h-full object-cover transition-transform group-hover:scale-105 news-image"
+          onError={(e) => {
+            const target = e.target as HTMLImageElement;
+            target.onerror = null;
+            target.src = 'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80';
+          }}
         />
       </div>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg line-clamp-2 group-hover:text-solar-blue transition-colors">
+        <CardTitle className="text-lg line-clamp-2 group-hover:text-teal-500 transition-colors">
           {news.title}
         </CardTitle>
       </CardHeader>
@@ -39,7 +44,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ news }) => {
           <Calendar className="h-4 w-4 mr-1" />
           {news.date}
         </div>
-        <span className="text-solar-blue flex items-center text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+        <span className="text-teal-500 flex items-center text-xs font-medium opacity-0 group-hover:opacity-100 transition-opacity">
           Read more <ExternalLink className="h-3 w-3 ml-1" />
         </span>
       </CardFooter>

@@ -114,13 +114,13 @@
   @apply text-xs font-light;
 }
 
-/* Consumer Theme */
+/* Consumer Theme - Light Blue, Green, and White palette */
 .consumer-theme {
-  @apply bg-gradient-to-b from-blue-50 to-white;
+  @apply bg-gradient-to-b from-sky-50 to-white;
 }
 
 .consumer-theme .bg-gradient-to-r {
-  @apply from-solar-blue to-blue-700;
+  @apply from-teal-500 to-sky-600;
 }
 
 .consumer-card {
@@ -128,20 +128,28 @@
 }
 
 .consumer-card-highlight {
-  @apply bg-white border-l-4 border-solar-blue shadow-lg;
+  @apply bg-white border-l-4 border-teal-500 shadow-lg;
 }
 
 .consumer-cta-button {
-  @apply bg-solar-blue hover:bg-solar-blue/90 font-semibold;
+  @apply bg-teal-500 hover:bg-teal-600 font-semibold;
 }
 
-/* Vendor Theme */
+.consumer-theme .section-title {
+  @apply text-teal-700;
+}
+
+.consumer-theme .card-hover:hover {
+  @apply border-teal-400;
+}
+
+/* Vendor Theme - Mustard Yellow and Navy Blue palette */
 .vendor-theme {
   @apply bg-gradient-to-b from-amber-50 to-white;
 }
 
 .vendor-theme .bg-gradient-to-r {
-  @apply from-solar-orange to-amber-600;
+  @apply from-amber-500 to-amber-600;
 }
 
 .vendor-card {
@@ -149,11 +157,19 @@
 }
 
 .vendor-card-highlight {
-  @apply bg-white border-l-4 border-solar-orange shadow-lg;
+  @apply bg-white border-l-4 border-amber-500 shadow-lg;
 }
 
 .vendor-cta-button {
-  @apply bg-solar-orange hover:bg-solar-orange/90 font-semibold;
+  @apply bg-amber-500 hover:bg-amber-600 font-semibold;
+}
+
+.vendor-theme .section-title {
+  @apply text-navy-700;
+}
+
+.vendor-theme .card-hover:hover {
+  @apply border-amber-400;
 }
 
 /* Additional UI Enhancements */
@@ -172,4 +188,39 @@
 /* News Card Animation */
 .group:hover .news-image {
   @apply scale-105;
+}
+
+/* Update header styles */
+.header-consumer {
+  @apply bg-gradient-to-r from-teal-500 to-sky-600;
+}
+
+.header-vendor {
+  @apply bg-gradient-to-r from-amber-500 to-amber-600;
+}
+
+/* Service card styles */
+.service-card {
+  @apply border rounded-lg p-4 transition-all hover:shadow-md flex flex-col items-center text-center;
+}
+
+.service-card-consumer {
+  @apply hover:border-teal-400;
+}
+
+.service-card-vendor {
+  @apply hover:border-amber-400;
+}
+
+/* Rating stars */
+.rating-stars {
+  @apply flex items-center;
+}
+
+.star-filled {
+  @apply text-yellow-400;
+}
+
+.star-empty {
+  @apply text-gray-300;
 }
