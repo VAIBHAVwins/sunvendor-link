@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -98,4 +99,77 @@
   body {
     @apply bg-background text-foreground;
   }
+}
+
+/* EcoGrid AI Motto */
+.ecogrid-motto {
+  @apply text-center my-4;
+}
+
+.ecogrid-motto h5 {
+  @apply text-sm font-medium opacity-80;
+}
+
+.ecogrid-motto p {
+  @apply text-xs font-light;
+}
+
+/* Consumer Theme */
+.consumer-theme {
+  @apply bg-gradient-to-b from-blue-50 to-white;
+}
+
+.consumer-theme .bg-gradient-to-r {
+  @apply from-solar-blue to-blue-700;
+}
+
+.consumer-card {
+  @apply bg-white shadow-md hover:shadow-lg transition-shadow;
+}
+
+.consumer-card-highlight {
+  @apply bg-white border-l-4 border-solar-blue shadow-lg;
+}
+
+.consumer-cta-button {
+  @apply bg-solar-blue hover:bg-solar-blue/90 font-semibold;
+}
+
+/* Vendor Theme */
+.vendor-theme {
+  @apply bg-gradient-to-b from-amber-50 to-white;
+}
+
+.vendor-theme .bg-gradient-to-r {
+  @apply from-solar-orange to-amber-600;
+}
+
+.vendor-card {
+  @apply bg-white shadow-md hover:shadow-lg transition-shadow;
+}
+
+.vendor-card-highlight {
+  @apply bg-white border-l-4 border-solar-orange shadow-lg;
+}
+
+.vendor-cta-button {
+  @apply bg-solar-orange hover:bg-solar-orange/90 font-semibold;
+}
+
+/* Additional UI Enhancements */
+.page-container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+}
+
+.section-title {
+  @apply text-2xl font-bold mb-4;
+}
+
+.section-subtitle {
+  @apply text-gray-600 mb-6;
+}
+
+/* News Card Animation */
+.group:hover .news-image {
+  @apply scale-105;
 }

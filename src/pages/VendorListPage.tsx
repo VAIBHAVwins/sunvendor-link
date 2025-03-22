@@ -46,12 +46,16 @@ const VendorListPage = () => {
   }, [radius]);
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col consumer-theme">
       <Header />
       
       <main className="flex-grow">
         <div className="bg-gradient-to-r from-solar-blue to-solar-dark py-10">
           <div className="container mx-auto px-4">
+            <div className="text-center mb-6">
+              <h5 className="text-white/80 italic">EcoGrid AI</h5>
+              <p className="text-white font-light">Smarter Solar, Greener Future</p>
+            </div>
             <h1 className="text-3xl font-bold text-white mb-2">Available Vendors</h1>
             <p className="text-white/80">
               Here are the solar vendors available for your {typeTitle} {gridType} installation
@@ -77,7 +81,7 @@ const VendorListPage = () => {
             </div>
           </div>
 
-          <div className="mb-6">
+          <div className="mb-6 consumer-card p-5 rounded-lg">
             <h2 className="text-xl font-semibold mb-4">Find Nearby Vendors</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
@@ -114,7 +118,7 @@ const VendorListPage = () => {
                 </Select>
               </div>
               <div className="flex items-end">
-                <Button className="w-full bg-solar-blue">
+                <Button className="w-full bg-solar-blue consumer-cta-button">
                   Find Vendors
                 </Button>
               </div>

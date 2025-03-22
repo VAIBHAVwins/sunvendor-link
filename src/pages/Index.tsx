@@ -15,6 +15,12 @@ const Index = () => {
       <Header />
       
       <main className="flex-grow">
+        {/* Motto Banner */}
+        <div className="bg-gradient-to-r from-solar-blue to-solar-dark py-2 text-center">
+          <h5 className="text-white/80 text-sm italic">EcoGrid AI</h5>
+          <p className="text-white text-xs font-light">Smarter Solar, Greener Future</p>
+        </div>
+        
         <HeroSection />
         
         <HomeBanner />

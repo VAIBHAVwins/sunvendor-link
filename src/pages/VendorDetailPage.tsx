@@ -17,7 +17,7 @@ const VendorDetailPage = () => {
   
   const vendor = vendors.find(v => v.id === id);
   
-  const [isUserLoggedIn, setIsUserLoggedIn] = useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = useState(true); // Simulating logged in user for demo
   
   if (!vendor) {
     return (
@@ -53,12 +53,17 @@ const VendorDetailPage = () => {
   };
   
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col consumer-theme">
       <Header />
       
       <main className="flex-grow">
         <div className="bg-gradient-to-r from-solar-blue to-solar-dark py-10">
           <div className="container mx-auto px-4">
+            <div className="text-center mb-6">
+              <h5 className="text-white/80 italic">EcoGrid AI</h5>
+              <p className="text-white font-light">Smarter Solar, Greener Future</p>
+            </div>
+            
             <Link to="/consumer/vendors" className="text-white/80 hover:text-white mb-4 inline-block">
               ← Back to Vendors
             </Link>
@@ -80,7 +85,7 @@ const VendorDetailPage = () => {
         <div className="container mx-auto px-4 py-8">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="md:col-span-2">
-              <Card>
+              <Card className="consumer-card">
                 <CardHeader>
                   <CardTitle>Price Breakdown</CardTitle>
                   <CardDescription>Detailed pricing for solar installation components</CardDescription>
@@ -107,7 +112,7 @@ const VendorDetailPage = () => {
               
               <div className="mt-8 space-y-4">
                 <h3 className="text-xl font-semibold">Vendor Information</h3>
-                <Card>
+                <Card className="consumer-card">
                   <CardContent className="pt-6">
                     <div className="space-y-4">
                       <div>
@@ -135,7 +140,7 @@ const VendorDetailPage = () => {
             </div>
             
             <div>
-              <Card className="sticky top-4">
+              <Card className="sticky top-4 consumer-card-highlight">
                 <CardHeader>
                   <CardTitle>Book a Site Visit</CardTitle>
                   <CardDescription>Get a detailed assessment at your location</CardDescription>
@@ -180,7 +185,7 @@ const VendorDetailPage = () => {
                 </CardContent>
                 <CardFooter className="flex flex-col space-y-2">
                   <Button 
-                    className="w-full bg-solar-orange hover:bg-solar-orange/90"
+                    className="w-full bg-solar-orange hover:bg-solar-orange/90 consumer-cta-button"
                     onClick={handleSiteVisitClick}
                   >
                     Book Site Visit Now
