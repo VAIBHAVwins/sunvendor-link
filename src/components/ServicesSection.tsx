@@ -27,7 +27,7 @@ const services = [
   {
     id: 'others',
     title: 'Other Services',
-    description: 'Can't find what you need? Request a custom service',
+    description: "Can't find what you need? Request a custom service",
     icon: <Plus className="h-10 w-10" />
   }
 ];
