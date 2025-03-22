@@ -16,6 +16,8 @@ import VendorPage from "./pages/VendorPage";
 import VendorRegisterPage from "./pages/VendorRegisterPage";
 import VendorLoginPage from "./pages/VendorLoginPage";
 import VendorDashboardPage from "./pages/VendorDashboardPage";
+import CustomerDashboardPage from "./pages/CustomerDashboardPage";
+import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -32,6 +34,7 @@ const App = () => (
           <Route path="/consumer/new-installation/:type" element={<InstallationTypePage />} />
           <Route path="/consumer/new-installation/:type/:gridType" element={<GridFormPage />} />
           <Route path="/consumer/vendors" element={<VendorListPage />} />
+          <Route path="/consumer/dashboard" element={<CustomerDashboardPage />} />
           <Route path="/vendor/:id" element={<VendorDetailPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/payment/:vendorId" element={<PaymentPage />} />
@@ -39,6 +42,7 @@ const App = () => (
           <Route path="/vendor/register" element={<VendorRegisterPage />} />
           <Route path="/vendor/login" element={<VendorLoginPage />} />
           <Route path="/vendor/dashboard" element={<VendorDashboardPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>

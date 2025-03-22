@@ -10,6 +10,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ArrowRight, Info, Upload } from 'lucide-react';
 import { GridType, InstallationType, ConsumerForm, GridTypeParam } from '@/types';
+import ApplianceSelection from '@/components/ApplianceSelection';
 
 const GridFormPage = () => {
   const { type, gridType } = useParams<{ type: string; gridType: string }>();
@@ -24,6 +25,7 @@ const GridFormPage = () => {
     electricityBoard: '',
     availableAreaSqft: 0,
     electricityBillFile: undefined,
+    appliances: [],
   });
 
   const [fileName, setFileName] = useState<string>('');
@@ -43,6 +45,13 @@ const GridFormPage = () => {
     setFormData({
       ...formData,
       [name]: name === 'maxElectricityBill' || name === 'availableAreaSqft' ? Number(value) : value,
+    });
+  };
+
+  const handleApplianceChange = (appliances: any[]) => {
+    setFormData({
+      ...formData,
+      appliances,
     });
   };
   
@@ -75,7 +84,7 @@ const GridFormPage = () => {
         </div>
         
         <div className="container mx-auto px-4 py-12">
-          <Card className="max-w-2xl mx-auto">
+          <Card className="max-w-3xl mx-auto">
             <CardHeader>
               <CardTitle>Solar Installation Information</CardTitle>
             </CardHeader>
@@ -121,6 +130,13 @@ const GridFormPage = () => {
                           <SelectItem value="bses">BSES</SelectItem>
                           <SelectItem value="msedcl">MSEDCL</SelectItem>
                           <SelectItem value="bescom">BESCOM</SelectItem>
+                          <SelectItem value="cesc">CESC</SelectItem>
+                          <SelectItem value="wbsedcl">WBSEDCL</SelectItem>
+                          <SelectItem value="bseb">BSEB</SelectItem>
+                          <SelectItem value="nesco">NESCO (Odisha)</SelectItem>
+                          <SelectItem value="jbvnl">JBVNL (Jharkhand)</SelectItem>
+                          <SelectItem value="apdcl">APDCL (Assam)</SelectItem>
+                          <SelectItem value="uppcl">UPPCL (Uttar Pradesh)</SelectItem>
                           <SelectItem value="other">Other</SelectItem>
                         </SelectContent>
                       </Select>
@@ -139,6 +155,8 @@ const GridFormPage = () => {
                       required 
                     />
                   </div>
+                  
+                  <ApplianceSelection onApplianceChange={handleApplianceChange} />
                   
                   <div>
                     <Label htmlFor="billUpload">Upload Latest Electricity Bill</Label>

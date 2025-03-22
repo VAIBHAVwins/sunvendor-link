@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Sun, Menu, X } from 'lucide-react';
+import { Sun, Menu, X, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
 
 const Header = () => {
@@ -78,9 +78,19 @@ const Header = () => {
             </div>
           </div>
           
-          <Link to="/settings" className="text-solar-dark hover:text-solar-orange transition-colors py-2 px-3 rounded-md hover:bg-gray-100 transform hover:scale-105 duration-200">
-            Settings
-          </Link>
+          <div className="group relative">
+            <button className="text-solar-dark hover:text-solar-orange transition-colors py-2 px-3 rounded-md hover:bg-gray-100 transform hover:scale-105 duration-200">
+              <User className="h-4 w-4" />
+            </button>
+            <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-200">
+              <Link to="/consumer/dashboard" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                Customer Dashboard
+              </Link>
+              <Link to="/settings" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                Settings
+              </Link>
+            </div>
+          </div>
         </nav>
         
         {/* Mobile menu button */}
@@ -140,6 +150,10 @@ const Header = () => {
                 Complaint
               </Link>
             </div>
+            
+            <Link to="/consumer/dashboard" className="block py-2 text-solar-dark hover:text-solar-orange">
+              Customer Dashboard
+            </Link>
             
             <Link to="/settings" className="block py-2 text-solar-dark hover:text-solar-orange">
               Settings

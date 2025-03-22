@@ -49,12 +49,6 @@ const VendorDashboardPage = () => {
                 >
                   Customer Inquiries
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="settings" 
-                  className="data-[state=active]:border-b-2 data-[state=active]:border-solar-blue rounded-none data-[state=active]:shadow-none py-3 px-4"
-                >
-                  Account Settings
-                </TabsTrigger>
               </TabsList>
             </div>
             
@@ -97,7 +91,7 @@ const VendorDashboardPage = () => {
                     <CardTitle>Quick Actions</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                       <Button 
                         variant="outline" 
                         className="h-auto py-6 flex flex-col items-center justify-center gap-2 border-dashed"
@@ -114,15 +108,6 @@ const VendorDashboardPage = () => {
                       >
                         <Users className="h-8 w-8 text-muted-foreground" />
                         <span>View Inquiries</span>
-                      </Button>
-                      
-                      <Button 
-                        variant="outline" 
-                        className="h-auto py-6 flex flex-col items-center justify-center gap-2 border-dashed"
-                        onClick={() => setActiveTab("settings")}
-                      >
-                        <PackageCheck className="h-8 w-8 text-muted-foreground" />
-                        <span>Update Pricing</span>
                       </Button>
                     </div>
                   </CardContent>
@@ -160,20 +145,6 @@ const VendorDashboardPage = () => {
                     <div className="p-4 text-center text-muted-foreground">
                       No customer inquiries yet. They will appear here when customers contact you.
                     </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-            
-            <TabsContent value="settings" className="mt-0">
-              <h2 className="text-xl font-semibold mb-6">Account Settings</h2>
-              <Card>
-                <CardContent className="p-6">
-                  <p className="text-muted-foreground mb-4">
-                    Update your company information and profile settings.
-                  </p>
-                  <div className="flex justify-end">
-                    <Button variant="outline">Edit Profile</Button>
                   </div>
                 </CardContent>
               </Card>
