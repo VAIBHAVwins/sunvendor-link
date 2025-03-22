@@ -20,6 +20,7 @@ import CustomerDashboardPage from "./pages/CustomerDashboardPage";
 import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 import ServiceRequestPage from "./pages/ServiceRequestPage";
+import ServicesPage from "./pages/ServicesPage";
 import { useEffect } from "react";
 
 const queryClient = new QueryClient();
@@ -66,6 +67,7 @@ const App = () => (
             <Route path="/consumer/vendors" element={<VendorListPage />} />
             <Route path="/consumer/dashboard" element={<CustomerDashboardPage />} />
             <Route path="/consumer/service-request/:serviceId" element={<ServiceRequestPage />} />
+            <Route path="/consumer/services" element={<ServicesPage />} />
             <Route path="/vendor/:id" element={<VendorDetailPage />} />
             <Route path="/signup" element={<SignupPage />} />
             <Route path="/payment/:vendorId" element={<PaymentPage />} />

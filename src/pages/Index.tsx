@@ -7,7 +7,6 @@ import RoleSelection from '@/components/RoleSelection';
 import NewsCard from '@/components/NewsCard';
 import SchemeCard from '@/components/SchemeCard';
 import HomeBanner from '@/components/HomeBanner';
-import ServicesSection from '@/components/ServicesSection';
 import { newsItems, schemeItems } from '@/data/mockData';
 
 const Index = () => {
@@ -27,8 +26,6 @@ const Index = () => {
         <HomeBanner />
         
         <RoleSelection />
-        
-        <ServicesSection />
         
         {/* News Section */}
         <section className="py-12 bg-gray-50">
