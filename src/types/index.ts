@@ -53,6 +53,12 @@ export interface ConsumerForm {
   electricityBoard?: string;
   availableAreaSqft: number;
   electricityBillFile?: File;
+  appliances?: Array<{
+    id: string;
+    name: string;
+    quantity: number;
+    specification: string;
+  }>;
 }
 
 export interface Product {
