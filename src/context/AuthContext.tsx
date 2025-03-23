@@ -1,0 +1,135 @@
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { 
+  User, 
+  createUserWithEmailAndPassword, 
+  signInWithEmailAndPassword, 
+  signOut, 
+  onAuthStateChanged
+} from 'firebase/auth';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { auth, db } from '../config/firebaseConfig';
+
+type UserType = 'customer' | 'vendor';
+
+interface AuthUser extends User {
+  userType?: UserType;
+}
+
+interface AuthContextType {
+  user: AuthUser | null;
+  isLoading: boolean;
+  registerVendor: (email: string, password: string, vendorData: any) => Promise<void>;
+  registerCustomer: (email: string, password: string, customerData: any) => Promise<void>;
+  login: (email: string, password: string) => Promise<UserType>;
+  logout: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | null>(null);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (currentUser) {
+        // Get user type from Firestore
+        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+        const userData = userDoc.data();
+        
+        const authUser: AuthUser = currentUser;
+        if (userData) {
+          authUser.userType = userData.userType as UserType;
+        }
+        
+        setUser(authUser);
+      } else {
+        setUser(null);
+      }
+      setIsLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  // Register vendor with custom data
+  const registerVendor = async (email: string, password: string, vendorData: any) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Store additional vendor data in Firestore
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        email,
+        userType: 'vendor',
+        ...vendorData,
+        createdAt: new Date()
+      });
+    } catch (error) {
+      console.error("Error registering vendor:", error);
+      throw error;
+    }
+  };
+
+  // Register customer with custom data
+  const registerCustomer = async (email: string, password: string, customerData: any) => {
+    try {
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      // Store additional customer data in Firestore
+      await setDoc(doc(db, 'users', userCredential.user.uid), {
+        email,
+        userType: 'customer',
+        ...customerData,
+        createdAt: new Date()
+      });
+    } catch (error) {
+      console.error("Error registering customer:", error);
+      throw error;
+    }
+  };
+
+  // Login user and return user type
+  const login = async (email: string, password: string): Promise<UserType> => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
+      const userData = userDoc.data();
+      
+      if (!userData || !userData.userType) {
+        throw new Error('User type not found');
+      }
+      
+      return userData.userType as UserType;
+    } catch (error) {
+      console.error("Error logging in:", error);
+      throw error;
+    }
+  };
+
+  // Logout
+  const logout = () => {
+    return signOut(auth);
+  };
+
+  const value = {
+    user,
+    isLoading,
+    registerVendor,
+    registerCustomer,
+    login,
+    logout
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

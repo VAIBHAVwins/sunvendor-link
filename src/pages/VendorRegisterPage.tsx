@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
@@ -13,6 +12,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
+import { useAuth } from '@/context/AuthContext';
 
 const vendorFormSchema = z.object({
   companyName: z.string().min(2, "Company name is required"),
@@ -33,6 +33,8 @@ type VendorFormValues = z.infer<typeof vendorFormSchema>;
 const VendorRegisterPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { registerVendor } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<VendorFormValues>({
     resolver: zodResolver(vendorFormSchema),
@@ -48,16 +50,29 @@ const VendorRegisterPage = () => {
     }
   });
   
-  function onSubmit(values: VendorFormValues) {
-    // In a real app, you would send this data to your backend
-    console.log(values);
-    
-    toast({
-      title: "Registration successful!",
-      description: "Welcome to EcoGrid AI. You can now log in to your vendor dashboard.",
-    });
-    
-    navigate('/vendor/login');
+  async function onSubmit(values: VendorFormValues) {
+    setIsLoading(true);
+    try {
+      const { password, confirmPassword, ...vendorData } = values;
+      
+      await registerVendor(values.email, values.password, vendorData);
+      
+      toast({
+        title: "Registration successful!",
+        description: "Welcome to EcoGrid AI. You can now log in to your vendor dashboard.",
+      });
+      
+      navigate('/vendor/login');
+    } catch (error: any) {
+      console.error("Registration error:", error);
+      toast({
+        title: "Registration failed",
+        description: error.message || "An error occurred during registration. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
   
   return (
@@ -195,8 +210,12 @@ const VendorRegisterPage = () => {
                   </div>
                   
                   <div className="flex justify-end">
-                    <Button type="submit" className="bg-solar-orange hover:bg-solar-orange/90">
-                      Register
+                    <Button 
+                      type="submit" 
+                      className="bg-solar-orange hover:bg-solar-orange/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Registering..." : "Register"}
                     </Button>
                   </div>
                 </form>

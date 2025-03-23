@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -12,6 +12,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { useAuth } from '@/context/AuthContext';
 
 const loginFormSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -23,6 +24,8 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const VendorLoginPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
@@ -32,16 +35,37 @@ const VendorLoginPage = () => {
     }
   });
   
-  function onSubmit(values: LoginFormValues) {
-    // In a real app, you would validate against your backend
-    console.log(values);
-    
-    toast({
-      title: "Login successful!",
-      description: "Welcome back to EcoGrid AI.",
-    });
-    
-    navigate('/vendor/dashboard');
+  async function onSubmit(values: LoginFormValues) {
+    setIsLoading(true);
+    try {
+      const userType = await login(values.email, values.password);
+      
+      if (userType !== 'vendor') {
+        toast({
+          title: "Access denied",
+          description: "This login is for vendors only. Please use the customer login if you are a customer.",
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+      
+      toast({
+        title: "Login successful!",
+        description: "Welcome back to EcoGrid AI.",
+      });
+      
+      navigate('/vendor/dashboard');
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        title: "Login failed",
+        description: "Invalid email or password. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
   
   return (
@@ -90,8 +114,12 @@ const VendorLoginPage = () => {
                     <Button variant="link" className="text-solar-blue p-0" onClick={() => navigate('/vendor/forgot-password')}>
                       Forgot Password?
                     </Button>
-                    <Button type="submit" className="bg-solar-blue hover:bg-solar-blue/90">
-                      Login
+                    <Button 
+                      type="submit" 
+                      className="bg-solar-blue hover:bg-solar-blue/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Signing in..." : "Login"}
                     </Button>
                   </div>
                 </form>

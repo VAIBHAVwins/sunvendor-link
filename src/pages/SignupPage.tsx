@@ -9,6 +9,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from '@/context/AuthContext';
 
 const SignupPage = () => {
   const [searchParams] = useSearchParams();
@@ -16,6 +17,8 @@ const SignupPage = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
+  const { registerCustomer, login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -32,24 +35,70 @@ const SignupPage = () => {
     });
   };
   
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would validate and send to the backend
-    toast({
-      title: "Account created successfully",
-      description: "You're now signed in to SunVendor Link",
-    });
-    navigate(redirect);
+    setIsLoading(true);
+    
+    try {
+      // Create customer data object
+      const customerData = {
+        name: formData.name,
+        phone: formData.phone,
+      };
+      
+      // Register the customer
+      await registerCustomer(formData.email, formData.password, customerData);
+      
+      toast({
+        title: "Account created successfully",
+        description: "You're now signed in to SunVendor Link",
+      });
+      
+      // Navigate to the redirect path or dashboard
+      navigate('/consumer/dashboard');
+    } catch (error: any) {
+      console.error("Signup error:", error);
+      toast({
+        title: "Signup failed",
+        description: error.message || "An error occurred during signup. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    // In a real app, you would validate and send to the backend
-    toast({
-      title: "Signed in successfully",
-      description: "Welcome back to SunVendor Link",
-    });
-    navigate(redirect);
+    setIsLoading(true);
+    
+    const email = (e.currentTarget as HTMLFormElement).elements.namedItem('login-email') as HTMLInputElement;
+    const password = (e.currentTarget as HTMLFormElement).elements.namedItem('login-password') as HTMLInputElement;
+    
+    try {
+      const userType = await login(email.value, password.value);
+      
+      toast({
+        title: "Signed in successfully",
+        description: "Welcome back to SunVendor Link",
+      });
+      
+      // Navigate based on user type
+      if (userType === 'vendor') {
+        navigate('/vendor/dashboard');
+      } else {
+        navigate('/consumer/dashboard');
+      }
+    } catch (error: any) {
+      console.error("Login error:", error);
+      toast({
+        title: "Login failed",
+        description: error.message || "Invalid email or password. Please try again.",
+        variant: "destructive"
+      });
+    } finally {
+      setIsLoading(false);
+    }
   };
   
   return (
@@ -124,8 +173,12 @@ const SignupPage = () => {
                       />
                     </div>
                     
-                    <Button type="submit" className="w-full bg-solar-blue hover:bg-solar-blue/90">
-                      Sign Up
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-solar-blue hover:bg-solar-blue/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Creating Account..." : "Sign Up"}
                     </Button>
                   </form>
                 </CardContent>
@@ -163,8 +216,12 @@ const SignupPage = () => {
                       />
                     </div>
                     
-                    <Button type="submit" className="w-full bg-solar-blue hover:bg-solar-blue/90">
-                      Login
+                    <Button 
+                      type="submit" 
+                      className="w-full bg-solar-blue hover:bg-solar-blue/90"
+                      disabled={isLoading}
+                    >
+                      {isLoading ? "Signing in..." : "Login"}
                     </Button>
                   </form>
                 </CardContent>
