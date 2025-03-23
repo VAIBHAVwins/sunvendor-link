@@ -2,9 +2,12 @@
 import React, { useState } from 'react';
 import { Sun, Menu, X, User } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '@/context/AuthContext';
+import LogoutButton from './LogoutButton';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { user } = useAuth();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -83,14 +86,34 @@ const Header = () => {
               <User className="h-4 w-4" />
             </button>
             <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-10 hidden group-hover:block transform origin-top scale-y-0 group-hover:scale-y-100 transition-transform duration-200">
-              <Link to="/consumer/dashboard" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                Customer Dashboard
-              </Link>
-              <Link to="/settings" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                Settings
-              </Link>
+              {user ? (
+                <>
+                  <Link to={user.userType === 'vendor' ? '/vendor/dashboard' : '/consumer/dashboard'} className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                    {user.userType === 'vendor' ? 'Vendor Dashboard' : 'Customer Dashboard'}
+                  </Link>
+                  <Link to="/settings" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                    Settings
+                  </Link>
+                  <div className="px-4 py-2">
+                    <LogoutButton variant="link" className="w-full justify-start p-0 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <Link to="/signup" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                    Sign Up
+                  </Link>
+                  <Link to="/vendor/login" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                    Vendor Login
+                  </Link>
+                </>
+              )}
             </div>
           </div>
+          
+          {user && (
+            <LogoutButton />
+          )}
         </nav>
         
         {/* Mobile menu button */}
@@ -151,13 +174,25 @@ const Header = () => {
               </Link>
             </div>
             
-            <Link to="/consumer/dashboard" className="block py-2 text-solar-dark hover:text-solar-orange">
-              Customer Dashboard
-            </Link>
-            
-            <Link to="/settings" className="block py-2 text-solar-dark hover:text-solar-orange">
-              Settings
-            </Link>
+            {user ? (
+              <>
+                <Link to={user.userType === 'vendor' ? '/vendor/dashboard' : '/consumer/dashboard'} className="block py-2 text-solar-dark hover:text-solar-orange">
+                  {user.userType === 'vendor' ? 'Vendor Dashboard' : 'Customer Dashboard'}
+                </Link>
+                
+                <Link to="/settings" className="block py-2 text-solar-dark hover:text-solar-orange">
+                  Settings
+                </Link>
+                
+                <div className="py-2">
+                  <LogoutButton variant="ghost" className="w-full justify-start" />
+                </div>
+              </>
+            ) : (
+              <Link to="/signup" className="block py-2 text-solar-dark hover:text-solar-orange">
+                Sign Up / Login
+              </Link>
+            )}
           </div>
         </div>
       )}

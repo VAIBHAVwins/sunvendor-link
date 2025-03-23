@@ -9,6 +9,7 @@ import {
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../config/firebaseConfig';
+import { useToast } from '@/hooks/use-toast';
 
 type UserType = 'customer' | 'vendor';
 
@@ -38,20 +39,25 @@ export const useAuth = () => {
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<AuthUser | null>(null);
   const [isLoading, setIsLoading] = useState(true);
+  const { toast } = useToast();
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       if (currentUser) {
-        // Get user type from Firestore
-        const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
-        const userData = userDoc.data();
-        
-        const authUser: AuthUser = currentUser;
-        if (userData) {
-          authUser.userType = userData.userType as UserType;
+        try {
+          // Get user type from Firestore
+          const userDoc = await getDoc(doc(db, 'users', currentUser.uid));
+          const userData = userDoc.data();
+          
+          const authUser: AuthUser = currentUser;
+          if (userData) {
+            authUser.userType = userData.userType as UserType;
+          }
+          
+          setUser(authUser);
+        } catch (error) {
+          console.error("Error fetching user data:", error);
         }
-        
-        setUser(authUser);
       } else {
         setUser(null);
       }
@@ -114,8 +120,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Logout
-  const logout = () => {
-    return signOut(auth);
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      toast({
+        title: "Logged out successfully",
+        description: "You have been logged out of your account",
+      });
+    } catch (error) {
+      console.error("Error during logout:", error);
+      toast({
+        title: "Logout failed",
+        description: "There was a problem logging you out",
+        variant: "destructive"
+      });
+      throw error;
+    }
   };
 
   const value = {

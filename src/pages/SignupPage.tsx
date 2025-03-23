@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -10,6 +10,26 @@ import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/context/AuthContext';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+
+// Validate form fields
+const loginSchema = z.object({
+  email: z.string().email("Please enter a valid email"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+const signupSchema = z.object({
+  name: z.string().min(2, "Name must be at least 2 characters"),
+  email: z.string().email("Please enter a valid email"),
+  phone: z.string().min(10, "Phone number must be at least 10 digits"),
+  password: z.string().min(6, "Password must be at least 6 characters"),
+});
+
+type LoginFormValues = z.infer<typeof loginSchema>;
+type SignupFormValues = z.infer<typeof signupSchema>;
 
 const SignupPage = () => {
   const [searchParams] = useSearchParams();
@@ -17,41 +37,53 @@ const SignupPage = () => {
   
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { registerCustomer, login } = useAuth();
+  const { registerCustomer, login, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
   
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    phone: '',
-    password: '',
+  // Redirect if already logged in
+  useEffect(() => {
+    if (user) {
+      const dashboardPath = user.userType === 'vendor' ? '/vendor/dashboard' : '/consumer/dashboard';
+      navigate(dashboardPath);
+    }
+  }, [user, navigate]);
+  
+  // Set up login form
+  const loginForm = useForm<LoginFormValues>({
+    resolver: zodResolver(loginSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    }
   });
   
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
-  };
+  // Set up signup form
+  const signupForm = useForm<SignupFormValues>({
+    resolver: zodResolver(signupSchema),
+    defaultValues: {
+      name: '',
+      email: '',
+      phone: '',
+      password: '',
+    }
+  });
   
-  const handleSignup = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSignup = async (values: SignupFormValues) => {
     setIsLoading(true);
     
     try {
       // Create customer data object
       const customerData = {
-        name: formData.name,
-        phone: formData.phone,
+        name: values.name,
+        phone: values.phone,
       };
       
       // Register the customer
-      await registerCustomer(formData.email, formData.password, customerData);
+      await registerCustomer(values.email, values.password, customerData);
       
       toast({
         title: "Account created successfully",
-        description: "You're now signed in to SunVendor Link",
+        description: "You're now signed in to EcoGrid AI",
       });
       
       // Navigate to the redirect path or dashboard
@@ -68,19 +100,15 @@ const SignupPage = () => {
     }
   };
   
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleLogin = async (values: LoginFormValues) => {
     setIsLoading(true);
     
-    const email = (e.currentTarget as HTMLFormElement).elements.namedItem('login-email') as HTMLInputElement;
-    const password = (e.currentTarget as HTMLFormElement).elements.namedItem('login-password') as HTMLInputElement;
-    
     try {
-      const userType = await login(email.value, password.value);
+      const userType = await login(values.email, values.password);
       
       toast({
         title: "Signed in successfully",
-        description: "Welcome back to SunVendor Link",
+        description: "Welcome back to EcoGrid AI",
       });
       
       // Navigate based on user type
@@ -122,65 +150,73 @@ const SignupPage = () => {
                     Create an account to continue with your solar journey
                   </CardDescription>
                   
-                  <form onSubmit={handleSignup} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="name">Full Name</Label>
-                      <Input 
-                        id="name" 
+                  <Form {...signupForm}>
+                    <form onSubmit={signupForm.handleSubmit(handleSignup)} className="space-y-4">
+                      <FormField
+                        control={signupForm.control}
                         name="name"
-                        value={formData.name}
-                        onChange={handleInputChange}
-                        placeholder="Enter your full name" 
-                        required 
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Full Name</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Enter your full name" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="email">Email</Label>
-                      <Input 
-                        id="email" 
+                      
+                      <FormField
+                        control={signupForm.control}
                         name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleInputChange}
-                        placeholder="Enter your email" 
-                        required 
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Enter your email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="phone">Phone Number</Label>
-                      <Input 
-                        id="phone" 
+                      
+                      <FormField
+                        control={signupForm.control}
                         name="phone"
-                        value={formData.phone}
-                        onChange={handleInputChange}
-                        placeholder="Enter your phone number" 
-                        required 
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Phone Number</FormLabel>
+                            <FormControl>
+                              <Input placeholder="Enter your phone number" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="password">Password</Label>
-                      <Input 
-                        id="password" 
+                      
+                      <FormField
+                        control={signupForm.control}
                         name="password"
-                        type="password"
-                        value={formData.password}
-                        onChange={handleInputChange}
-                        placeholder="Create a password" 
-                        required 
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <Input type="password" placeholder="Create a password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-solar-blue hover:bg-solar-blue/90"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Creating Account..." : "Sign Up"}
-                    </Button>
-                  </form>
+                      
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-solar-blue hover:bg-solar-blue/90"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Creating Account..." : "Sign Up"}
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
                 <CardFooter className="text-sm text-center text-muted-foreground">
                   By signing up, you agree to our Terms of Service and Privacy Policy
@@ -193,37 +229,45 @@ const SignupPage = () => {
                     Login to your account to continue
                   </CardDescription>
                   
-                  <form onSubmit={handleLogin} className="space-y-4">
-                    <div className="space-y-2">
-                      <Label htmlFor="login-email">Email</Label>
-                      <Input 
-                        id="login-email" 
-                        name="login-email"
-                        type="email"
-                        placeholder="Enter your email" 
-                        required 
+                  <Form {...loginForm}>
+                    <form onSubmit={loginForm.handleSubmit(handleLogin)} className="space-y-4">
+                      <FormField
+                        control={loginForm.control}
+                        name="email"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Email</FormLabel>
+                            <FormControl>
+                              <Input type="email" placeholder="Enter your email" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <div className="space-y-2">
-                      <Label htmlFor="login-password">Password</Label>
-                      <Input 
-                        id="login-password" 
-                        name="login-password"
-                        type="password"
-                        placeholder="Enter your password" 
-                        required 
+                      
+                      <FormField
+                        control={loginForm.control}
+                        name="password"
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Password</FormLabel>
+                            <FormControl>
+                              <Input type="password" placeholder="Enter your password" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                    </div>
-                    
-                    <Button 
-                      type="submit" 
-                      className="w-full bg-solar-blue hover:bg-solar-blue/90"
-                      disabled={isLoading}
-                    >
-                      {isLoading ? "Signing in..." : "Login"}
-                    </Button>
-                  </form>
+                      
+                      <Button 
+                        type="submit" 
+                        className="w-full bg-solar-blue hover:bg-solar-blue/90"
+                        disabled={isLoading}
+                      >
+                        {isLoading ? "Signing in..." : "Login"}
+                      </Button>
+                    </form>
+                  </Form>
                 </CardContent>
                 <CardFooter className="flex justify-center">
                   <Button variant="link" className="text-solar-blue">

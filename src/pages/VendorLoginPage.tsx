@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -24,8 +24,15 @@ type LoginFormValues = z.infer<typeof loginFormSchema>;
 const VendorLoginPage = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
+  
+  // Redirect if already logged in as vendor
+  useEffect(() => {
+    if (user && user.userType === 'vendor') {
+      navigate('/vendor/dashboard');
+    }
+  }, [user, navigate]);
   
   const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginFormSchema),
