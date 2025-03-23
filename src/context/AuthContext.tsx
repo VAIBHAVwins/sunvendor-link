@@ -57,6 +57,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           setUser(authUser);
         } catch (error) {
           console.error("Error fetching user data:", error);
+          setUser(null);
         }
       } else {
         setUser(null);
@@ -70,6 +71,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Register vendor with custom data
   const registerVendor = async (email: string, password: string, vendorData: any) => {
     try {
+      // Ensure no user is currently logged in
+      if (user) {
+        await signOut(auth);
+      }
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // Store additional vendor data in Firestore
       await setDoc(doc(db, 'users', userCredential.user.uid), {
@@ -87,6 +93,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Register customer with custom data
   const registerCustomer = async (email: string, password: string, customerData: any) => {
     try {
+      // Ensure no user is currently logged in
+      if (user) {
+        await signOut(auth);
+      }
+      
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       // Store additional customer data in Firestore
       await setDoc(doc(db, 'users', userCredential.user.uid), {
@@ -104,6 +115,11 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Login user and return user type
   const login = async (email: string, password: string): Promise<UserType> => {
     try {
+      // Ensure no user is currently logged in
+      if (user) {
+        await signOut(auth);
+      }
+      
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const userDoc = await getDoc(doc(db, 'users', userCredential.user.uid));
       const userData = userDoc.data();

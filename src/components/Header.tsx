@@ -63,10 +63,6 @@ const Header = () => {
             </div>
           </div>
           
-          <Link to="/vendor/login" className="text-solar-dark hover:text-solar-orange transition-colors py-2 px-3 rounded-md hover:bg-gray-100 transform hover:scale-105 duration-200">
-            Vendor Login
-          </Link>
-          
           <div className="group relative">
             <button className="text-solar-dark hover:text-solar-orange transition-colors py-2 px-3 rounded-md hover:bg-gray-100 transform hover:scale-105 duration-200">
               Support
@@ -101,10 +97,7 @@ const Header = () => {
               ) : (
                 <>
                   <Link to="/signup" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                    Sign Up
-                  </Link>
-                  <Link to="/vendor/login" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                    Vendor Login
+                    Login / Sign Up
                   </Link>
                 </>
               )}
@@ -160,10 +153,6 @@ const Header = () => {
               </Link>
             </div>
             
-            <Link to="/vendor/login" className="block py-2 text-solar-dark hover:text-solar-orange">
-              Vendor Login
-            </Link>
-            
             <div className="py-2">
               <span className="block font-medium text-solar-dark mb-1">Support</span>
               <Link to="/enquiry" className="block py-1 pl-4 text-solar-dark hover:text-solar-orange">
@@ -190,7 +179,7 @@ const Header = () => {
               </>
             ) : (
               <Link to="/signup" className="block py-2 text-solar-dark hover:text-solar-orange">
-                Sign Up / Login
+                Login / Sign Up
               </Link>
             )}
           </div>
