@@ -87,26 +87,22 @@ const Header = () => {
                   <Link to={user.userType === 'vendor' ? '/vendor/dashboard' : '/consumer/dashboard'} className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
                     {user.userType === 'vendor' ? 'Vendor Dashboard' : 'Customer Dashboard'}
                   </Link>
-                  <Link to="/settings" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                    Settings
-                  </Link>
                   <div className="px-4 py-2">
                     <LogoutButton variant="link" className="w-full justify-start p-0 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200" />
                   </div>
                 </>
               ) : (
                 <>
+                  <Link to="/vendor/login" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
+                    Vendor Login
+                  </Link>
                   <Link to="/signup" className="block px-4 py-2 text-solar-dark hover:bg-solar-yellow/10 hover:text-solar-orange transform hover:translate-x-1 duration-200">
-                    Login / Sign Up
+                    Customer Login
                   </Link>
                 </>
               )}
             </div>
           </div>
-          
-          {user && (
-            <LogoutButton />
-          )}
         </nav>
         
         {/* Mobile menu button */}
@@ -169,18 +165,19 @@ const Header = () => {
                   {user.userType === 'vendor' ? 'Vendor Dashboard' : 'Customer Dashboard'}
                 </Link>
                 
-                <Link to="/settings" className="block py-2 text-solar-dark hover:text-solar-orange">
-                  Settings
-                </Link>
-                
                 <div className="py-2">
                   <LogoutButton variant="ghost" className="w-full justify-start" />
                 </div>
               </>
             ) : (
-              <Link to="/signup" className="block py-2 text-solar-dark hover:text-solar-orange">
-                Login / Sign Up
-              </Link>
+              <>
+                <Link to="/vendor/login" className="block py-2 text-solar-dark hover:text-solar-orange">
+                  Vendor Login
+                </Link>
+                <Link to="/signup" className="block py-2 text-solar-dark hover:text-solar-orange">
+                  Customer Login
+                </Link>
+              </>
             )}
           </div>
         </div>
