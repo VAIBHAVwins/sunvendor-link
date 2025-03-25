@@ -6,13 +6,13 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { useAuth } from '@/context/AuthContext';
+import { supabase } from '@/lib/supabase';
 
 const loginFormSchema = z.object({
   email: z.string().email("Please enter a valid email"),
@@ -45,6 +45,23 @@ const VendorLoginPage = () => {
   async function onSubmit(values: LoginFormValues) {
     setIsLoading(true);
     try {
+      // First, check if this is a vendor account
+      const { data: vendorData, error: vendorError } = await supabase
+        .from('vendors')
+        .select('*')
+        .eq('email', values.email)
+        .single();
+      
+      if (vendorError || !vendorData) {
+        toast({
+          title: "Access denied",
+          description: "No vendor account found with this email. Please use the customer login if you are a customer.",
+          variant: "destructive"
+        });
+        setIsLoading(false);
+        return;
+      }
+      
       const userType = await login(values.email, values.password);
       
       if (userType !== 'vendor') {
@@ -63,11 +80,11 @@ const VendorLoginPage = () => {
       });
       
       navigate('/vendor/dashboard');
-    } catch (error) {
+    } catch (error: any) {
       console.error("Login error:", error);
       toast({
         title: "Login failed",
-        description: "Invalid email or password. Please try again.",
+        description: error.message || "Invalid email or password. Please try again.",
         variant: "destructive"
       });
     } finally {

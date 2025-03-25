@@ -6,7 +6,6 @@ import Footer from '@/components/Footer';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from '@/context/AuthContext';
@@ -14,6 +13,7 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { supabase } from '@/lib/supabase';
 
 // Validate form fields
 const loginSchema = z.object({
@@ -104,6 +104,24 @@ const SignupPage = () => {
     setIsLoading(true);
     
     try {
+      // Check if this is a vendor account
+      const { data: vendorData, error: vendorError } = await supabase
+        .from('vendors')
+        .select('*')
+        .eq('email', values.email)
+        .maybeSingle();
+      
+      // If it's a vendor account, direct to vendor login
+      if (vendorData) {
+        toast({
+          title: "Vendor account detected",
+          description: "Please use the vendor login page to access your vendor account.",
+          variant: "destructive"
+        });
+        navigate('/vendor/login');
+        return;
+      }
+      
       const userType = await login(values.email, values.password);
       
       toast({
