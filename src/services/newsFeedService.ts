@@ -39,7 +39,7 @@ export const fetchSolarNews = async (): Promise<NewsItem[]> => {
     const response = await axios.get('https://api.rss2json.com/v1/api.json', {
       params: {
         rss_url: selectedFeed,
-        api_key: '', // Removed API key
+        api_key: 'your_api_key_if_needed',
         count: 9  // Limit the number of articles
       }
     });
