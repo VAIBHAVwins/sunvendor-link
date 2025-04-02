@@ -6,13 +6,13 @@ import { getAnalytics } from 'firebase/analytics';
 
 // Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyB7DEzzKr3F034eAkFYRjwYnKd0KQR7HCs",
-  authDomain: "ecogrid-ai-1.firebaseapp.com",
-  projectId: "ecogrid-ai-1",
-  storageBucket: "ecogrid-ai-1.appspot.com",
-  messagingSenderId: "1054238760560",
-  appId: "1:1054238760560:web:1df20f1fed0ded9ab7deb5",
-  measurementId: "G-FPRC7EN3JR"
+  apiKey: "",
+  authDomain: "",
+  projectId: "",
+  storageBucket: "",
+  messagingSenderId: "",
+  appId: "",
+  measurementId: ""
 };
 
 // Initialize Firebase
